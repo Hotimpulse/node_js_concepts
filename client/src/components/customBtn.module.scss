@@ -1,0 +1,17 @@
+.custom_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0.2em;
+  background-color: lavender;
+  color: #000;
+  cursor: pointer;
+
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}

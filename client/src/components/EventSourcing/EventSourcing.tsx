@@ -1,41 +1,27 @@
 import { useEffect, useState } from "react";
-import CustomBtn from "./components/CustomBtn";
-import styles from "./longPolling.module.scss";
+import styles from "./eventSourcing.module.scss";
 import axios from "axios";
+import CustomBtn from "../../ui/CustomBtn";
 
 type TMessage = {
   message: string;
   id: number;
 };
 
-export default function LongPolling() {
+export default function EventSourcing() {
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [value, setValue] = useState<string>("");
 
-  const subscribeToMsgs = async (signal: AbortSignal) => {
-    try {
-      const { data } = await axios.get("http://localhost:5000/get-messages", {
-        signal // Pass the abort signal to axios
-      });
-      setMessages((prev) => {
-        // Prevent duplicate messages
-        if (prev.some((msg) => msg.id === data.id)) {
-          return prev;
-        }
-        return [data, ...prev];
-      });
-      return true;
-    } catch (error) {
-      if (axios.isCancel(error)) {
-        return false;
-      }
-      console.log(error);
-      return true;
-    }
+  const subscribeToMsgs = async () => {
+    const eventSource = new EventSource("http://localhost:5000/connect");
+    eventSource.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      setMessages((prev) => [message, ...prev]);
+    };
   };
 
   const handleSendMessage = async () => {
-    if (!value.trim()) return; // Don't send empty messages
+    if (!value.trim()) return;
 
     try {
       const message = {
@@ -50,22 +36,7 @@ export default function LongPolling() {
   };
 
   useEffect(() => {
-    const controller = new AbortController();
-    let isSubscribed = true;
-
-    const poll = async () => {
-      while (isSubscribed) {
-        const shouldContinue = await subscribeToMsgs(controller.signal);
-        if (!shouldContinue) break;
-      }
-    };
-
-    poll();
-
-    return () => {
-      isSubscribed = false;
-      controller.abort(); // Cancel any pending requests
-    };
+    subscribeToMsgs();
   }, []);
 
   return (

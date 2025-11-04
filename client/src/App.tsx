@@ -1,10 +1,12 @@
 import "./App.css";
-import LongPolling from "./LongPolling";
+import EventSourcing from "./components/EventSourcing/EventSourcing";
+// import LongPolling from "./components/LongPolling/LongPolling";
 
 function App() {
   return (
     <>
-      <LongPolling />
+      {/* <LongPolling /> */}
+      <EventSourcing />
     </>
   );
 }

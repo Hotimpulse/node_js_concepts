@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20rem;
+}
+
+.form {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: min(100% - 0rem, 20rem);
+  height: fit-content;
+  border-radius: 0.2em;
+  margin-bottom: 1rem;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: min(100% - 0rem, 20rem);
+  border: 1px solid black;
+  border-radius: 0.2em;
+  min-height: 40vh;
+  background-color: lavender;
+}
+
+input {
+  display: flex;
+  width: 20rem;
+  height: 3rem;
+  background-color: lavender;
+  border-radius: 0.2em;
+
+  border: 1px solid black;
+}
